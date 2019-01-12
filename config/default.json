@@ -1,0 +1,6 @@
+{
+    "jwtPrivateKey": "unsecureKey",
+    "db": "mongodb://mino:admin111@45.76.167.184:27017/mino",
+    "port": "3000",
+    "requiresAuth": false
+}

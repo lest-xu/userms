@@ -1,0 +1,32 @@
+{
+  "name": "@datasinfo/userms",
+  "version": "1.0.0",
+  "description": "a user management system for small or mid size companies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/datasinfo/userms.git"
+  },
+  "keywords": [
+    "user",
+    "management",
+    "system"
+  ],
+  "author": "datasinfo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/datasinfo/userms/issues"
+  },
+  "homepage": "https://github.com/datasinfo/userms#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.2",
+    "eslint": "^5.12.0",
+    "express": "^4.16.4",
+    "joi": "^14.3.0",
+    "lodash": "^4.17.11",
+    "mongoose": "^5.3.14"
+  }
+}
