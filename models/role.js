@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const { appSechema } = require('./app');
 
 const roleSechema = new mongoose.Schema({
     name: {
@@ -23,7 +24,7 @@ const roleSechema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    apps: [String]
+    apps: [appSechema]
 });
 
 const Role = new mongoose.model('Role', roleSechema);

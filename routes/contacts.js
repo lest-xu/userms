@@ -126,6 +126,4 @@ router.delete('/:id', async (req, res) => {
     res.send(contact);
 });
 
-
-
 module.exports = router;
