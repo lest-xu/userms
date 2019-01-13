@@ -1,3 +1,5 @@
+// const jwt = require('jsonwebtoken');
+// const config = require('../config/default.json');
 const Joi = require('joi');
 const { Contact } = require('../models/contact');
 const express = require('express');
@@ -16,7 +18,9 @@ router.post('/', async (req, res) => {
 
     if (!validPassword) return res.status(400).send(errorMsg404);
 
-    res.send(true);
+    const token = user.generateAuthToken();
+
+    res.send(token);
 });
 
 

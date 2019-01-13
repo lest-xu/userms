@@ -1,3 +1,5 @@
+// const jwt = require('jsonwebtoken');
+// const config = require('../config/default.json');
 const { Contact, validateContact } = require('../models/contact');
 const express = require('express');
 var _ = require('lodash');
@@ -65,7 +67,8 @@ router.post('/', async (req, res) => {
     contact.password = await bcrypt.hash(contact.password, salt);
 
     await contact.save().then(result => {
-        res.send(_.pick(result, ['firstName', 'lastName', 'email', 'password']));
+        const token = contact.generateAuthToken();
+        res.header('x-auth-token',token).send(_.pick(result, ['firstName', 'lastName', 'email', 'password']));
     }).catch(error => {
         debugger
         console.log(error);

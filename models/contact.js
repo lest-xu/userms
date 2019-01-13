@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken');
+const config = require('../config/default.json');
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const { addressSechema } = require('./address');
@@ -84,6 +86,11 @@ const contactSechema = new mongoose.Schema({
         type: roleSechema
     },
 });
+
+contactSechema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, config.jwtPrivateKey);
+    return token;
+}
 
 const Contact = mongoose.model('Contact', contactSechema);
 
