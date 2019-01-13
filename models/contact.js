@@ -88,7 +88,7 @@ const contactSechema = new mongoose.Schema({
 });
 
 contactSechema.methods.generateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id }, config.jwtPrivateKey);
+    const token = jwt.sign({ _id: this._id, role: this.role}, config.jwtPrivateKey);
     return token;
 }
 

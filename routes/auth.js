@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const errorMsg404 = 'Invalid email or password.';
 
+// user authentication
 router.post('/', async (req, res) => {
     const { error } = validateAuth(req.body);
     if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);

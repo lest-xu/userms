@@ -1,5 +1,6 @@
 // const jwt = require('jsonwebtoken');
 // const config = require('../config/default.json');
+const auth = require('../middleware/auth');
 const { Contact, validateContact } = require('../models/contact');
 const express = require('express');
 var _ = require('lodash');
@@ -8,23 +9,31 @@ const router = express.Router();
 const errorMsg404 = 'The user with the given ID was not found.';
 
 
-// GET contacts
-router.get('/', async (req, res) => {
-    const contacts = await Contact.find().sort({ 'createdDate': -1 });
-    res.send(contacts);
+// GET users
+router.get('/', auth, async (req, res) => {
+    const users = await Contact.find().sort({ 'createdDate': -1 });
+    res.send(users);
 });
 
 
 // GET contact/:id
-router.get('/:id', async (req, res) => {
-    const contact = await Contact.findById(req.params.id);
+// router.get('/:id', async (req, res) => {
+//     const user = await Contact.findById(req.params.id);
 
-    if (!contact) return res.status(404).send(errorMsg404);
+//     if (!user) return res.status(404).send(errorMsg404);
 
-    res.send(contact);
+//     res.send(user);
+// });
+
+// get current user
+// GET users/me
+router.get('/me', auth, async (req, res) => {
+    const user = await Contact.findById(req.user._id).select('-password');
+
+    res.send(user);
 });
 
-// POST contact
+// POST user
 router.post('/', async (req, res) => {
     const { error } = validateContact(req.body);
     if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);
