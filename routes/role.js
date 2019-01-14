@@ -1,5 +1,6 @@
 const auth = require('../middleware/auth');
 const { Role, validateRole } = require('../models/role');
+const { App } = require('../models/app');
 const express = require('express');
 const router = express.Router();
 const errorMsg404 = 'The role info with the given ID was not found.';
@@ -28,10 +29,17 @@ router.post('/', auth, async (req, res) => {
     let role = await Role.findOne({ name: req.body.name });
     if (role) return res.status(400).send('role already existed.');
 
+    const apps = [];
+    req.body.appIds.forEach(appId => {
+        const app = await App.findById(appId);
+        if (!app) return res.status(400).send("Invalid app.");
+        apps.push(app);
+    });
+
     role = new Role({
         name: req.body.name,
         desc: req.body.desc,
-        apps: req.body.apps,
+        apps: apps,
         createdBy: req.body.createdBy
     });
 
