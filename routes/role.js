@@ -57,10 +57,17 @@ router.put('/:id', auth, async (req, res) => {
     const { error } = validateRole(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
+    const apps = [];
+    req.body.appIds.forEach(appId => {
+        const app = await App.findById(appId);
+        if (!app) return res.status(400).send("Invalid app.");
+        apps.push(app);
+    });
+
     const role = await Role.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         desc: req.body.desc,
-        apps: req.body.apps,
+        apps: apps,
         modifiedBy: req.body.modifiedBy
     },
         {
