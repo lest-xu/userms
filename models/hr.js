@@ -46,7 +46,7 @@ const HumanResource = new mongoose.model('HumanResource', hrSechema);
 
 function validateHumanResource(humanResource) {
     const schema = {
-        contactId: ObjectId,
+        contactId: Joi.string().max(256).required(),
         name: Joi.string().max(256).required(),
         desc: Joi.string().optional().allow(null).allow('').max(768),
         sin: Joi.number(),

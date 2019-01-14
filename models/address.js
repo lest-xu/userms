@@ -2,6 +2,7 @@ const Joi = require('joi');
 const mongoose = require('mongoose');
 
 const addressSechema = new mongoose.Schema({
+    contactId: String,
     unit: {
         type: String,
         maxlength: 20
@@ -63,6 +64,7 @@ const Address = new mongoose.model('Address', addressSechema);
 
 function validateAddress(address) {
     const schema = {
+        contactId: Joi.string().max(256).required(),
         unit: Joi.string().optional().allow(null).allow('').max(20),
         line1: Joi.string().max(256).required(),
         lien2: Joi.string().optional().allow(null).allow('').max(256),

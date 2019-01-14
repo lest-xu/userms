@@ -34,7 +34,7 @@ router.get('/me', auth, async (req, res) => {
 });
 
 // POST user
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validateContact(req.body);
     if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);
 
@@ -87,8 +87,8 @@ router.post('/', async (req, res) => {
 
 });
 
-
-router.put('/:id', async (req, res) => {
+// PUT update a user
+router.put('/:id', auth, async (req, res) => {
     const { error } = validateContact(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -130,7 +130,7 @@ router.put('/:id', async (req, res) => {
     res.send(contact);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const contact = await Contact.findByIdAndRemove(req.params.id);
 
     if (!contact) return res.status(404).send(errorMsg404);

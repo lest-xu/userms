@@ -33,9 +33,9 @@ function validateRole(role) {
     const schema = {
         name: Joi.string().max(256).required(),
         desc: Joi.string().optional().allow(null).allow('').max(768),
+        apps: Joi.array().optional().allow(null),
         createdBy: Joi.string().optional().allow(null).allow('').max(256),
-        modifiedBy: Joi.string().optional().allow(null).allow('').max(256),
-        apps: Joi.array().optional().allow(null).allow('').items(Joi.string())
+        modifiedBy: Joi.string().optional().allow(null).allow('').max(256)
     }
 
     return Joi.validate(role, schema);

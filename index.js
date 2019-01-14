@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 const express = require('express');
 const config = require("./config/default.json");
 const users = require('./routes/contacts');
+const addresses = require('./routes/address');
+const hr = require('./routes/hr');
+const departments = require('./routes/department');
 const auth = require('./routes/auth');
 
 const app = express();
@@ -14,6 +17,9 @@ mongoose.connect(mongoDbUrl)
 
 app.use(express.json());
 app.use('/api/users', users);
+app.use('/api/addresses', addresses);
+app.use('/api/hr', hr);
+app.use('/api/departments', departments);
 app.use('/api/auth', auth);
 
 const port = process.env.PORT || config.port;
