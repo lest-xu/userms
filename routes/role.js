@@ -30,7 +30,7 @@ router.post('/', auth, async (req, res) => {
     if (role) return res.status(400).send('role already existed.');
 
     const apps = [];
-    req.body.appIds.forEach(appId => {
+    req.body.appIds.forEach(async appId =>  {
         const app = await App.findById(appId);
         if (!app) return res.status(400).send("Invalid app.");
         apps.push(app);
@@ -58,7 +58,7 @@ router.put('/:id', auth, async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const apps = [];
-    req.body.appIds.forEach(appId => {
+    req.body.appIds.forEach(async appId => {
         const app = await App.findById(appId);
         if (!app) return res.status(400).send("Invalid app.");
         apps.push(app);
