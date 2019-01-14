@@ -34,7 +34,7 @@ function validateDepartment(department) {
         desc: Joi.string().optional().allow(null).allow('').max(768),
         manager: Joi.string().optional().allow(null).allow('').max(256),
         createdBy: Joi.string().optional().allow(null).allow('').max(256),
-        modifiedBy: JJoi.string().optional().allow(null).allow('').max(256)
+        modifiedBy: Joi.string().optional().allow(null).allow('').max(256)
     }
 
     return Joi.validate(department, schema);
