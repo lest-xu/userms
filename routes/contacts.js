@@ -31,7 +31,6 @@ router.post('/', auth, async (req, res) => {
     
     let contact = await Contact.findOne({ email: req.body.email });
     if (contact) return res.status(400).send('email already registered.');
-
     contact = new Contact({
         firstName: req.body.firstName,
         lastName: req.body.lastName,

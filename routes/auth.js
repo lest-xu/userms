@@ -1,5 +1,3 @@
-// const jwt = require('jsonwebtoken');
-// const config = require('../config/default.json');
 const Joi = require('joi');
 const { Contact } = require('../models/contact');
 const express = require('express');
@@ -7,7 +5,8 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const errorMsg404 = 'Invalid email or password.';
 
-// user authentication
+// user authentication / login
+// generate authentication token
 router.post('/', async (req, res) => {
     const { error } = validateAuth(req.body);
     if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);
