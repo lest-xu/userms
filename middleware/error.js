@@ -24,18 +24,18 @@ module.exports = function (err, req, res, next) {
     res.status(500).send('Something failed.');
 }
 
-function LogMessage(err, level = 'error', filename = 'logfile.log') {
+function LogMessage(msg, level = 'error', filename = 'logfile.log') {
     const logger = winston.createLogger({
         level: level,
         format: winston.format.json(),
         transports: [
             new winston.transports.Console(),
-            new winston.transports.File({ filename: filename }),
+            new winston.transports.File({ filename: filename, level: level }),
             new winston.transports.MongoDB({ db: config.db, level: level }) //log to mongoDB
         ]
     });
 
-    logger.error(err.message, err);
+    logger.error(msg);
 
 }
 
