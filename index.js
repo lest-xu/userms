@@ -11,6 +11,9 @@ require('./startup/routes')(app);
 // mongodb
 require('./startup/db')();
 
+// use helmet and compression
+require('./startup/prod')(app);
+
 
 const port = process.env.PORT || config.port;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
