@@ -1,4 +1,5 @@
 const auth = require('../middleware/auth');
+const validateObjectId = require("../middleware/validateObjectId");
 const { Address, validateAddress } = require('../models/address');
 const express = require('express');
 var _ = require('lodash');
@@ -10,16 +11,6 @@ router.get('/', auth, async (req, res) => {
     const addresses = await Address.find().sort({ 'createdDate': -1 });
     res.send(addresses);
 });
-
-// GET addresses/:id
-router.get('/:id', auth, async (req, res) => {
-    const address = await Address.findById(req.params.id);
-
-    if (!address) return res.status(404).send(errorMsg404);
-
-    res.send(address);
-});
-
 
 // POST addresses/
 router.post('/', auth, async (req, res) => {
@@ -53,10 +44,10 @@ router.post('/', auth, async (req, res) => {
 });
 
 // PUT addresses/id update an address
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = validateAddress(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
+    const now = new Date();
     const address = await Address.findByIdAndUpdate(req.params.id, {
         unit: req.body.unit,
         line1: req.body.line1,
@@ -67,7 +58,8 @@ router.put('/:id', auth, async (req, res) => {
         zipcode: req.body.zipcode,
         pobox: req.body.pobox,
         isPrimary: req.body.isPrimary,
-        modifiedDate: req.body.modifiedDate
+        modifiedBy: req.body.modifiedBy,
+        modifiedDate: now
     },
         {
             new: true
@@ -80,12 +72,22 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // DELETE address/id 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, validateObjectId], async (req, res) => {
     const address = await Address.findByIdAndRemove(req.params.id);
 
     if (!address) return res.status(404).send(errorMsg404);
 
     res.send(address);
 });
+
+// GET addresses/:id
+router.get('/:id', [auth, validateObjectId], async (req, res) => {
+    const address = await Address.findById(req.params.id);
+
+    if (!address) return res.status(404).send(errorMsg404);
+
+    res.send(address);
+});
+
 
 module.exports = router;

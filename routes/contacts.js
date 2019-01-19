@@ -1,13 +1,12 @@
-// const jwt = require('jsonwebtoken');
-// const config = require('../config/default.json');
 const auth = require('../middleware/auth');
+const validateObjectId = require("../middleware/validateObjectId");
 const { Contact, validateContact } = require('../models/contact');
 const express = require('express');
 var _ = require('lodash');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const errorMsg404 = 'The user with the given ID was not found.';
-const { LogMessage } = require('../middleware/error');
+// const { LogMessage } = require('../middleware/error');
 
 // GET users
 router.get('/', auth, async (req, res) => {
@@ -16,15 +15,6 @@ router.get('/', auth, async (req, res) => {
     res.send(users);
 });
 
-
-// GET contact/:id
-// router.get('/:id', async (req, res) => {
-//     const user = await Contact.findById(req.params.id);
-
-//     if (!user) return res.status(404).send(errorMsg404);
-
-//     res.send(user);
-// });
 
 // get current user
 // GET users/me
@@ -85,11 +75,10 @@ router.post('/', auth, async (req, res) => {
         res.send(error['errmsg']);
     });
 
-
 });
 
 // PUT update a user
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = validateContact(req.body);
     if (error) return res.status(400).send(error.details[0].message);
 
@@ -131,12 +120,21 @@ router.put('/:id', auth, async (req, res) => {
     res.send(contact);
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, validateObjectId], async (req, res) => {
     const contact = await Contact.findByIdAndRemove(req.params.id);
 
     if (!contact) return res.status(404).send(errorMsg404);
 
     res.send(contact);
+});
+
+// GET users/:id
+router.get('/:id', [auth, validateObjectId], async (req, res) => {
+    const user = await Contact.findById(req.params.id);
+
+    if (!user) return res.status(404).send(errorMsg404);
+
+    res.send(user);
 });
 
 module.exports = router;

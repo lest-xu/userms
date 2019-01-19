@@ -1,4 +1,5 @@
 const auth = require('../middleware/auth');
+const validateObjectId = require("../middleware/validateObjectId");
 const { HumanResource, validateHumanResource } = require('../models/hr');
 const express = require('express');
 const router = express.Router();
@@ -9,16 +10,6 @@ router.get('/', auth, async (req, res) => {
     const hr = await HumanResource.find().sort({ 'createdDate': -1 });
     res.send(hr);
 });
-
-// GET hr/:id
-router.get('/:id', auth, async (req, res) => {
-    const hr = await HumanResource.findById(req.params.id);
-
-    if (!hr) return res.status(404).send(errorMsg404);
-
-    res.send(hr);
-});
-
 
 // POST hr/
 router.post('/', auth, async (req, res) => {
@@ -55,10 +46,10 @@ router.post('/', auth, async (req, res) => {
 });
 
 // PUT hr/id update an hr info
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = validateHumanResource(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
+    const now = new Date();
     const hr = await HumanResource.findByIdAndUpdate(req.params.id, {
         name: req.body.name,
         desc: req.body.desc,
@@ -72,7 +63,8 @@ router.put('/:id', auth, async (req, res) => {
         joinDate: req.body.joinDate,
         startDate: req.body.startDate,
         endDate: req.body.endDate,
-        modifiedBy: req.body.modifiedBy
+        modifiedBy: req.body.modifiedBy,
+        modifiedDate: now
     },
         {
             new: true
@@ -85,12 +77,22 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // DELETE hr/id 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, validateObjectId], async (req, res) => {
     const hr = await HumanResource.findByIdAndRemove(req.params.id);
 
     if (!hr) return res.status(404).send(errorMsg404);
 
     res.send(hr);
 });
+
+// GET hr/:id
+router.get('/:id', [auth, validateObjectId], async (req, res) => {
+    const hr = await HumanResource.findById(req.params.id);
+
+    if (!hr) return res.status(404).send(errorMsg404);
+
+    res.send(hr);
+});
+
 
 module.exports = router;

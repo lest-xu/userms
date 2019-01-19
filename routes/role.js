@@ -1,4 +1,5 @@
 const auth = require('../middleware/auth');
+const validateObjectId = require("../middleware/validateObjectId");
 const { Role, validateRole } = require('../models/role');
 const { App } = require('../models/app');
 const express = require('express');
@@ -10,16 +11,6 @@ router.get('/', auth, async (req, res) => {
     const role = await Role.find().sort({ 'createdDate': -1 });
     res.send(role);
 });
-
-// GET role/:id
-router.get('/:id', auth, async (req, res) => {
-    const role = await Role.findById(req.params.id);
-
-    if (!role) return res.status(404).send(errorMsg404);
-
-    res.send(role);
-});
-
 
 // POST role/
 router.post('/', auth, async (req, res) => {
@@ -53,10 +44,10 @@ router.post('/', auth, async (req, res) => {
 });
 
 // PUT role/id update an role info
-router.put('/:id', auth, async (req, res) => {
+router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = validateRole(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-
+    const now = new Date();
     const apps = [];
     req.body.appIds.forEach(async appId => {
         const app = await App.findById(appId);
@@ -68,7 +59,8 @@ router.put('/:id', auth, async (req, res) => {
         name: req.body.name,
         desc: req.body.desc,
         apps: apps,
-        modifiedBy: req.body.modifiedBy
+        modifiedBy: req.body.modifiedBy,
+        modifiedDate: now
     },
         {
             new: true
@@ -81,8 +73,17 @@ router.put('/:id', auth, async (req, res) => {
 
 
 // DELETE role/id 
-router.delete('/:id', auth, async (req, res) => {
+router.delete('/:id', [auth, validateObjectId], async (req, res) => {
     const role = await Role.findByIdAndRemove(req.params.id);
+
+    if (!role) return res.status(404).send(errorMsg404);
+
+    res.send(role);
+});
+
+// GET role/:id
+router.get('/:id', [auth, validateObjectId], async (req, res) => {
+    const role = await Role.findById(req.params.id);
 
     if (!role) return res.status(404).send(errorMsg404);
 
