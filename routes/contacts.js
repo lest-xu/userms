@@ -43,7 +43,7 @@ router.post('/', auth, async (req, res) => {
     if (contact) return res.status(400).send('email already registered.');
 
     contact = new Contact({
-        firstName: req.body.name,
+        firstName: req.body.firstName,
         lastName: req.body.lastName,
         middleName: req.body.middleName,
         nickName: req.body.nickName,
@@ -94,7 +94,7 @@ router.put('/:id', auth, async (req, res) => {
     if (error) return res.status(400).send(error.details[0].message);
 
     const contact = await Contact.findByIdAndUpdate(req.params.id, {
-        firstName: req.body.name,
+        firstName: req.body.firstName,
         lastName: req.body.lastName,
         middleName: req.body.middleName,
         nickName: req.body.nickName,
