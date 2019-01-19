@@ -10,10 +10,23 @@ const departments = require('./routes/department');
 const roles = require('./routes/role');
 const apps = require('./routes/app');
 const auth = require('./routes/auth');
+const { LogMessage } = require('./middleware/error');
 
 const app = express();
-
 const mongoDbUrl = config.db;
+
+//uncaught exceptions
+process.on('uncaughtException', (ex) => {
+    LogMessage(ex.message, 'info', 'uncaughtException.log');
+    process.exit(1);
+})
+
+// unhandled Rejection
+process.on('unhandledRejection', (ex) => {
+    LogMessage(ex.message, 'info', 'unhandledRejection.log');
+    process.exit(1);
+})
+
 
 ///username:password@host:port
 mongoose.connect(mongoDbUrl)
