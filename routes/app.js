@@ -6,7 +6,6 @@ const errorMsg404 = 'The app with the given ID was not found.';
 
 // GET app/
 router.get('/', auth, async (req, res) => {
-    throw new Error('could not get apps');
     const app = await App.find().sort({ 'createdDate': -1 });
     res.send(app);
 });

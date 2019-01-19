@@ -1,4 +1,6 @@
 const winston = require('winston');
+require('winston-mongodb');
+const config = require("../config/default.json");
 
 module.exports = function (err, req, res, next) {
 
@@ -9,7 +11,8 @@ module.exports = function (err, req, res, next) {
         format: winston.format.json(),
         transports: [
             new winston.transports.Console(),
-            new winston.transports.File({ filename: 'logfile.log' })
+            new winston.transports.File({ filename: 'logfile.log' }),
+            new winston.transports.MongoDB({ db: config.db }) //log to mongoDB
         ]
     });
 
@@ -20,3 +23,20 @@ module.exports = function (err, req, res, next) {
 
     res.status(500).send('Something failed.');
 }
+
+function LogMessage(err, level = 'error') {
+    const logger = winston.createLogger({
+        level: level,
+        format: winston.format.json(),
+        transports: [
+            new winston.transports.Console(),
+            new winston.transports.File({ filename: 'logfile.log' }),
+            new winston.transports.MongoDB({ db: config.db }) //log to mongoDB
+        ]
+    });
+
+    logger.error(err);
+
+}
+
+module.exports.LogMessage = LogMessage;

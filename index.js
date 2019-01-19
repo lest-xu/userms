@@ -14,6 +14,7 @@ const auth = require('./routes/auth');
 const app = express();
 
 const mongoDbUrl = config.db;
+
 ///username:password@host:port
 mongoose.connect(mongoDbUrl)
     .then(() => console.log('Connected to MongoDB...' + mongoDbUrl))

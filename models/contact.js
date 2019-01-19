@@ -8,10 +8,7 @@ const { departmentSechema } = require('./department');
 const { roleSechema } = require('./role');
 
 const contactSechema = new mongoose.Schema({
-    firstName: {
-        type: String,
-        maxlength: 256
-    },
+    firstName: String,
     lastName: String,
     middleName: String,
     nickName: String,

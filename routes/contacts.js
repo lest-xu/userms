@@ -7,7 +7,7 @@ var _ = require('lodash');
 const bcrypt = require('bcrypt');
 const router = express.Router();
 const errorMsg404 = 'The user with the given ID was not found.';
-
+const { LogMessage } = require('../middleware/error');
 
 // GET users
 router.get('/', auth, async (req, res) => {
@@ -37,7 +37,7 @@ router.get('/me', auth, async (req, res) => {
 router.post('/', auth, async (req, res) => {
     const { error } = validateContact(req.body);
     if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);
-
+    
     let contact = await Contact.findOne({ email: req.body.email });
     if (contact) return res.status(400).send('email already registered.');
 
