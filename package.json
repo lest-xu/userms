@@ -1,6 +1,6 @@
 {
   "name": "@datasinfo/userms",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "a user management system for small or mid size companies",
   "main": "index.js",
   "scripts": {
