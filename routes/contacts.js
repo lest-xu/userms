@@ -11,6 +11,7 @@ const { LogMessage } = require('../middleware/error');
 
 // GET users
 router.get('/', auth, async (req, res) => {
+    
     const users = await Contact.find().sort({ 'createdDate': -1 });
     res.send(users);
 });
