@@ -3,13 +3,13 @@ const { Contact } = require('../models/contact');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const router = express.Router();
-const errorMsg404 = 'Invalid email or password.';
+const errorMsg404 ='Invalid email or password.';
 
 // user authentication / login
 // generate authentication token
 router.post('/', async (req, res) => {
     const { error } = validateAuth(req.body);
-    if (error) return res.status(400).send('Joi Error: ' + error.details[0].message);
+    if (error) return res.status(400).send('Validation Error: ' + error.details[0].message);
 
     let user = await Contact.findOne({ email: req.body.email });
     if (!user) return res.status(400).send(errorMsg404);
@@ -20,7 +20,7 @@ router.post('/', async (req, res) => {
 
     const token = user.generateAuthToken();
 
-    res.send( JSON.stringify(token) );
+    res.send(token);
 });
 
 
