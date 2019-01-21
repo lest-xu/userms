@@ -7,6 +7,8 @@ const hr = require('../routes/hr');
 const departments = require('../routes/department');
 const roles = require('../routes/role');
 const apps = require('../routes/app');
+const settings = require('../routes/settings');
+const logs = require('../routes/log');
 const auth = require('../routes/auth');
 
 module.exports = function (app) {
@@ -18,6 +20,8 @@ module.exports = function (app) {
     app.use('/api/departments', departments);
     app.use('/api/roles', roles);
     app.use('/api/apps', apps);
+    app.use('/api/settings', settings);
+    app.use('/api/logs', logs);
     app.use('/api/auth', auth);
     app.use(error);
 }
