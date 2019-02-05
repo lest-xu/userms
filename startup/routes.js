@@ -11,6 +11,7 @@ const absences = require('../routes/absence');
 const holidays = require('../routes/holiday');
 const leaveTypes = require('../routes/leaveType');
 const settings = require('../routes/settings');
+const inventories = require('../routes/inventory');
 const logs = require('../routes/log');
 const auth = require('../routes/auth');
 
@@ -27,6 +28,7 @@ module.exports = function (app) {
     app.use('/api/holidays', holidays);
     app.use('/api/leaveTypes', leaveTypes);
     app.use('/api/settings', settings);
+    app.use('/api/inventories', inventories);
     app.use('/api/logs', logs);
     app.use('/api/auth', auth);
     app.use(error);

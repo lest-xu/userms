@@ -44,7 +44,7 @@ router.post('/', auth, async (req, res) => {
 router.put('/:id', [auth, validateObjectId], async (req, res) => {
     const { error } = validateAbsence(req.body);
     if (error) return res.status(400).send(error.details[0].message);
-    const now = new Date();
+
     const absence = await Absence.findByIdAndUpdate(req.params.id, {
         status: req.body.status,
         approvedBy: req.body.approvedBy,

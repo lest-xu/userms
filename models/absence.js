@@ -46,6 +46,7 @@ function validateAbsence(absence) {
         status: Joi.string().optional().allow(null).allow('').max(256),
         approvedBy: Joi.string().optional().allow(null).allow('').max(256),
         approvedDate: Joi.date().optional().allow(null).allow('').max(256),
+        dateDeducted: Joi.number(),
         details: Joi.string().optional().allow(null).allow('').max(768)
     }
 
