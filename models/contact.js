@@ -2,10 +2,10 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/default.json');
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const { addressSechema } = require('./address');
-const { hrSechema } = require('./hr');
-const { departmentSechema } = require('./department');
-const { roleSechema } = require('./role');
+// const { addressSechema } = require('./address');
+// const { hrSechema } = require('./hr');
+// const { departmentSechema } = require('./department');
+// const { roleSechema } = require('./role');
 
 const contactSechema = new mongoose.Schema({
     firstName: String,
@@ -67,21 +67,11 @@ const contactSechema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    homeAddress: {
-        type: addressSechema
-    },
-    mailingAddress: {
-        type: addressSechema
-    },
-    hr: {
-        type: hrSechema
-    },
-    department: {
-        type: departmentSechema
-    },
-    role: {
-        type: roleSechema
-    },
+    homeAddress: String,
+    mailingAddress: String,
+    hr: String,
+    department: String,
+    role: String,
 });
 
 contactSechema.methods.generateAuthToken = function() {
